@@ -10,4 +10,13 @@ Instead of having your application control all database authorization (which get
 ## How It Works
 You're essentially creating auth tokens for each group that needs to access the database (managers, employees, users, etc.). You sign the auth token in a secure place (i.e. on your server) and can return that token to the user, or store it yourself in redis or even postgres. On each query, you set that token as a postgres config variable, which allows the end user to do what they need to do, and nothing else.
 
-A very rough example is contained in `seed.sql`.
+A very rough example is contained in `setup.sql`.  It creates tables (users, managers, employees, products), and defines who can do what. For example, a manager can see all other manager's ID's and usernames, but only their own salary.
+![image](https://user-images.githubusercontent.com/2141012/115927663-00042300-a442-11eb-92e7-05b8c447a988.png)
+
+There's also a view for managers to only see their own employees (`api.employees_v2`). If instead you wanted managers to see all employees, but only see and update their own employees' salaries you could set up it like the `api.managers` view.
+
+Hopefully more examples and cleaner code (along with a basic sveltekit front end integration) are coming soon. PR's, suggestions and questions (whether or not I can answer them :) are welcome!
+
+## Inspiration
+I couldn't have made it without Bennie Swart's [awesome talk](https://www.youtube.com/watch?v=-9QqQ2jkG_4&t=2319s) and this [blog post](https://www.2ndquadrant.com/en/blog/application-users-vs-row-level-security/) by 2ndQuadrant.
+
